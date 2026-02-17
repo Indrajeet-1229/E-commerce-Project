@@ -4,7 +4,7 @@ import Title from './Title';
 import ProductItem from './ProductItem';
 
 
-const Latestcollection = () => {
+const LatestCollection = () => {
   const { products } = useContext(ShopContext);
   const [latestProducts, setLatestProducts] = useState([]);
   useEffect(() => {
@@ -29,4 +29,4 @@ const Latestcollection = () => {
   )
 }
 
-export default Latestcollection
+export default LatestCollection
