@@ -5,8 +5,9 @@ import { toast } from 'react-toastify';
 
 
 const Login = () => {
+  const [loading, setLoading] = useState(false)
   const [currentState, setCurrentState] = useState('Login');
-  const { token, setToken, navigate, backendURL ,setLoggedUser} = useContext(ShopContext);
+  const { token, setToken, navigate, backendURL, setLoggedUser } = useContext(ShopContext);
   const [name, setName] = useState('')
   const [password, setPassword] = useState('')
   const [email, setEmail] = useState('')
@@ -16,13 +17,13 @@ const Login = () => {
 
     try {
       if (currentState === "Sign Up") {
-
+    setLoading(true)
         const response = await axios.post(backendURL + '/api/user/register', { name, email, password });
         if (response.data.success) {
           toast.success("Register Successfully");
           setToken(response.data.token);
           localStorage.setItem('token', response.data.token)
-          localStorage.setItem('loggedUser',JSON.stringify(response.data.user))
+          localStorage.setItem('loggedUser', JSON.stringify(response.data.user))
           setLoggedUser(response.data.user)
         }
         else {
@@ -30,14 +31,14 @@ const Login = () => {
         }
       }
       else {
-
+        setLoading(true)
         const response = await axios.post(backendURL + "/api/user/login", { email, password });
         if (response.data.success) {
           toast.success("Login Successfully");
           setToken(response.data.token);
           localStorage.setItem('token', response.data.token)
-          localStorage.setItem('loggedUser',JSON.stringify(response.data.user))
-           setLoggedUser(response.data.user)
+          localStorage.setItem('loggedUser', JSON.stringify(response.data.user))
+          setLoggedUser(response.data.user)
         }
         else {
           toast.error(response.data.message);
@@ -47,6 +48,9 @@ const Login = () => {
     } catch (error) {
       toast.error(error.message);
       console.log(error)
+    }
+    finally {
+      setLoading(false)
     }
   }
   useEffect(() => {
@@ -69,7 +73,13 @@ const Login = () => {
           currentState === "Login" ? <p onClick={() => setCurrentState('Sign Up')} className='cursor-pointer'>Create Account</p> : <p onClick={() => setCurrentState('Login')} className='cursor-pointer'>Login Here</p>
         }
       </div>
-      <button className='bg-black text-white font-ligth  px-8 py-2 mt-4'>{currentState === "Login" ? "Sign In" : "Sign Up"}</button>
+      <button className='flex items-center justify-center gap-2 bg-black text-white font-ligth  px-8 py-2 mt-4'>{currentState === "Login" ? "Sign In" : "Sign Up"}
+
+        {loading && (
+          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin "></div>
+        )}
+
+      </button>
 
 
     </form>
