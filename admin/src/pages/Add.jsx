@@ -3,6 +3,8 @@ import { assets } from '../assets/assets'
 import axios from 'axios'
 import { backendUrl } from '../App'
 import { toast } from 'react-toastify'
+import Loader from '../other/Loader'
+import ButtonLoader from '../other/ButtonLoader'
 
 const Add = ({ token }) => {
   const [loading, setLoading] = useState(false)
@@ -146,7 +148,7 @@ const Add = ({ token }) => {
         <label className='cursor-pointer' htmlFor="bestseller">Add to bestseller</label>
       </div>
       <button className='flex items-center justify-center gap-2 w-28 py-3 px-2 mt-4 bg-black text-white' type='submit'>Add {loading && (
-        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin "></div>
+       <ButtonLoader/>
       )}</button>
     </form>
   )

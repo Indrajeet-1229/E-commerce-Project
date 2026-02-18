@@ -21,7 +21,7 @@ const App = () => {
 
   return (
     <div div className='bg-gray-50 min-h-screen'>
-      <ToastContainer />
+      <ToastContainer  autoClose={1000}/>
       {token === ""
         ? <Login setToken={setToken} /> :
         <>

@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { ShopContext } from '../context/ShopContext';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import ButtonLoader from '../other/ButtonLoader';
 
 
 const Login = () => {
@@ -77,7 +78,7 @@ const Login = () => {
       <button className='flex items-center justify-center gap-2 bg-black text-white font-ligth  px-8 py-2 mt-4'>{currentState === "Login" ? "Sign In" : "Sign Up"}
 
         {loading && (
-          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin "></div>
+          <ButtonLoader />
         )}
 
       </button>

@@ -12,6 +12,7 @@ const ShopContextProvider = (props) => {
     const [showSearch, setShowSearch] = useState(false);
     const [cartItems, setCartItems] = useState({});
     const [products, setProducts] = useState([]);
+    const[productsLoading, setProductsLoading] = useState(false);
     const [token, setToken] = useState(localStorage.getItem("token") ? localStorage.getItem("token") : '')
     const [loggedUser, setLoggedUser] = useState(localStorage.getItem("loggedUser") ? JSON.parse(localStorage.getItem("loggedUser")) : '')
     const navigate = useNavigate()
@@ -113,6 +114,7 @@ const ShopContextProvider = (props) => {
 
     const getProductsData = async () => {
         try {
+            setProductsLoading(true);
             const response = await axios.get(backendURL + "/api/product/list");
             if (response.data.success) {
                 setProducts(response.data.products)
@@ -126,11 +128,14 @@ const ShopContextProvider = (props) => {
             console.log(error)
             toast.error(error.message)
         }
+        finally{
+            setProductsLoading(false);
+        }
     }
 
     const getUserCart = async (token) => {
         try {
-
+setProductsLoading(true)
             const response = await axios.post(backendURL + "/api/cart/get", {}, { headers: { token } })
             if (response.data.success) {
                 setCartItems(response.data.cartData)
@@ -139,12 +144,15 @@ const ShopContextProvider = (props) => {
             console.log(error)
             toast.error(error.message)
         }
+        finally{
+            setProductsLoading(false)
+        }
     }
 
     useEffect(() => {
         getProductsData();
 
-    }, [])
+    }, [token])
     useEffect(() => {
         getUserCart(localStorage.getItem("token"))
         getUserCart(JSON.parse(localStorage.getItem("loggedUser")))
@@ -152,7 +160,7 @@ const ShopContextProvider = (props) => {
     }, [token])
 
     const value = {
-      loggedUser, setLoggedUser,  products, currency, delivery_fee, search, setSearch, showSearch, setShowSearch, cartItems, setCartItems, addToCart, getCartCount, updateQuantity, getCartAmount, navigate, backendURL, setToken, token
+      loggedUser, setLoggedUser,  products, currency, delivery_fee, search, setSearch, showSearch, setShowSearch, cartItems, setCartItems, addToCart, getCartCount, updateQuantity, getCartAmount, navigate, backendURL, setToken, token, productsLoading, setProductsLoading
 
     }
     return (

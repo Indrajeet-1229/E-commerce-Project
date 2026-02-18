@@ -3,16 +3,19 @@ import { ShopContext } from '../context/ShopContext'
 import { assets } from '../assets/assets';
 import Title from '../components/Title';
 import ProductItem from '../components/ProductItem';
+import Loader from '../other/Loader';
 
 const Collection = () => {
 
-  const { products, search, showSearch } = useContext(ShopContext);
+  const { products, search, showSearch,productsLoading } = useContext(ShopContext); 
   const [showFilter, setShowFilter] = useState(true);
   const [filterProducts, setFilterProducts] = useState([])
 
   const [category, setCategory] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
   const [sortType, setSorttype] = useState('relavent')
+
+
   const toggleCategory = (e) => {
     if (category.includes(e.target.value)) {
       setCategory(prev => prev.filter(item => item !== e.target.value))
@@ -61,6 +64,7 @@ const Collection = () => {
         break;
     }
   }
+
   useEffect(() => {
     applyFilter()
   }, [category, subCategory, search, showSearch, products]);
@@ -118,13 +122,16 @@ const Collection = () => {
           </select>
         </div>
         {/* Map Products */}
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 gap-y-6">
+       {
+        !productsLoading ?
+         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 gap-y-6">
           {
             filterProducts.map((item, index) => (
               <ProductItem key={index} id={item._id} image={item.image} name={item.name} price={item.price} />
             ))
           }
-        </div>
+        </div> : <Loader/>
+       }
       </div>
 
     </div>

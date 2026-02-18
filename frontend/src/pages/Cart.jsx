@@ -3,9 +3,10 @@ import { ShopContext } from '../context/ShopContext'
 import Title from '../components/Title';
 import { assets } from '../assets/assets';
 import CartTotal from '../components/CartTotal';
+import Loader from '../other/Loader';
 
 const Cart = () => {
-  const { products, currency, cartItems, updateQuantity, navigate,token } = useContext(ShopContext);
+  const { products, currency, cartItems, updateQuantity, navigate,token,productsLoading } = useContext(ShopContext);
   const [cartData, setCartData] = useState([]);
 
   useEffect(() => {
@@ -36,7 +37,8 @@ const Cart = () => {
       <div className="text-2xl mb-3 ">
         <Title text1={'YOUR'} text2={'CART'} />
       </div>
-      <div className="">
+     {
+      !productsLoading ?  <div className="">
         {
           cartData.map((item, index) => {
             const productData = products.find((product) => product._id === item._id);
@@ -61,7 +63,8 @@ const Cart = () => {
             )
           })
         }
-      </div>
+      </div> : <Loader/>
+     }
       <div className="flex justify-end my-20">
         <div className="w-full sm:w-[450px]">
           <CartTotal />

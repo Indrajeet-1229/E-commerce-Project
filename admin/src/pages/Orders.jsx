@@ -6,16 +6,18 @@ import { backendUrl } from '../App'
 import { currency } from '../App'
 import { assets } from '../assets/assets';
 import { toast } from 'react-toastify'
+import Loader from '../other/Loader';
 
 function Orders({ token }) {
   const [orders, setOrders] = useState([]);
-
+const[loading, setLoading] = useState(false); 
 
   const fetchAllOrderes = async () => {
     if (!token) {
       return null;
     }
     try {
+      setLoading(true)
       const response = await axios.post(backendUrl + "/api/order/list", {}, { headers: { token } });
       if (response.data.success) {
         setOrders(response.data.orders.reverse())
@@ -27,6 +29,9 @@ function Orders({ token }) {
       console.log(error);
       toast.error(error.message)
 
+    }
+    finally{
+      setLoading(false)
     }
   }
 
@@ -51,7 +56,8 @@ function Orders({ token }) {
   return (
     <div>
       <h3>Order Page</h3>
-      <div>
+     {
+      !loading ?  <div>
         {
           orders.map((order, index) => (
             <div className='grid grid-cols-1 sm:grid-cols-[0.5fr_2fr_1fr] lg:grid-cols-[0.5fr_2fr_1fr_1fr] gap-3 items-start border-2 border-gray-200 p-5 md:p-8  my-3 md:my-4 text-xs sm:text-sm text-gray-700' key={index}>
@@ -95,7 +101,8 @@ function Orders({ token }) {
           ))
         }
         
-      </div>
+      </div> : <Loader/>
+     }
 
     </div>
   )

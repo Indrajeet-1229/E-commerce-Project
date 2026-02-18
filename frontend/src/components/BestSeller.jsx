@@ -5,7 +5,7 @@ import ProductItem from './ProductItem';
 import Loader from '../other/Loader';
 
 const BestSeller = () => {
-  const { products } = useContext(ShopContext);
+  const { products,productsLoading } = useContext(ShopContext);
 
   const [bestSeller, setBestSeller] = useState([]);
 
@@ -22,7 +22,7 @@ const BestSeller = () => {
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae placeat hic, tempora iste consectetur laborum!</p>
       </div>
      {
-      products ?  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6">
+     ! productsLoading ?  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6">
         {
           bestSeller.map((item, index) => (
             <ProductItem key={index} id={item._id} image={item.image} name={item.name} price={item.price} />

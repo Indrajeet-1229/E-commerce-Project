@@ -2,12 +2,13 @@ import React, { useContext, useEffect, useState } from 'react'
 import { ShopContext } from '../context/ShopContext'
 import Title from '../components/Title'
 import axios from 'axios'
+import Loader from '../other/Loader'
 
 const Orders = () => {
-  const { backendURL, token, currency } = useContext(ShopContext)
+  const { backendURL, token, currency, productsLoading, setProductsLoading } = useContext(ShopContext)
 
   const [orderData, setOrderData] = useState([])
-  const [loading, setLoading] = useState(false)
+ 
 
   const orderStages = [
     "Order Placed",
@@ -21,7 +22,7 @@ const Orders = () => {
     try {
       if (!token) return
 
-      setLoading(true)
+      setProductsLoading(true)
 
       const response = await axios.post(
         backendURL + "/api/order/userorders",
@@ -50,7 +51,7 @@ const Orders = () => {
     } catch (error) {
       console.log(error.message)
     } finally {
-      setLoading(false)
+      setProductsLoading(false)
     }
   }
 
@@ -65,7 +66,7 @@ const Orders = () => {
         <Title text1={"MY"} text2={"ORDERS"} />
       </div>
 {
-  orderData ? 
+  !productsLoading ? 
       <div>
         {orderData.map((item, index) => {
 
@@ -115,10 +116,10 @@ const Orders = () => {
                 {/* Track Button */}
                 <button
                   onClick={loadOrderData}
-                  disabled={loading}
+               
                   className="border border-gray-300 hover:bg-gray-100 transition px-4 py-2 text-sm font-medium rounded disabled:opacity-50"
                 >
-                  {loading ? "Checking..." : "Track Order"}
+                 Track Order
                 </button>
 
               </div>

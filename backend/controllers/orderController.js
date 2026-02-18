@@ -15,7 +15,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const placeOrder = async (req, res) => {
     try {
         const { userId, items, amount, address } = req.body
- console.log(address)
+
         const orderData = {
             userId,
             items,

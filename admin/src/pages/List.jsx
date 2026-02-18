@@ -2,14 +2,15 @@ import React, { useEffect, useState } from 'react'
 import { backendUrl, currency } from '../App';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import Loader from '../other/Loader';
 
 const List = ({ token }) => {
   const [list, setList] = useState([]);
-
+const[loading, setLoading] = useState(false); 
 
   const fetchList = async () => {
     try {
-
+setLoading(true)
       const response = await axios.get(backendUrl + "/api/product/list", {
         headers: { token }
       });
@@ -17,6 +18,9 @@ const List = ({ token }) => {
 
     } catch (error) {
       console.log(error)
+    }
+    finally{
+      setLoading(false)
     }
   }
 
@@ -33,7 +37,7 @@ const List = ({ token }) => {
       }
     } catch (error) {
       console.log(error);
-      toast.error(response.data.message);
+      toast.error("Error removing product");
     }
   }
   useEffect(() => {
@@ -42,7 +46,8 @@ const List = ({ token }) => {
   return (
     <>
       <p className='mb-2'>All Products List</p>
-      <div className='flex flex-col gap-2'>
+     {
+      !loading ?  <div className='flex flex-col gap-2'>
         <div className="hidden md:grid grid-cols-[1fr_3fr_1fr_1fr_1fr] items-center py-1  px-2 border bg-gray-100 text-sm">
           <b>Image</b>
           <b>Name</b>
@@ -64,7 +69,8 @@ const List = ({ token }) => {
           })
         }
       </div>
-
+:<Loader/>
+     }
 
     </>
   )
