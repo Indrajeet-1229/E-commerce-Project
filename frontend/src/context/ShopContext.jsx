@@ -12,35 +12,37 @@ const ShopContextProvider = (props) => {
     const [showSearch, setShowSearch] = useState(false);
     const [cartItems, setCartItems] = useState({});
     const [products, setProducts] = useState([]);
-    const[productsLoading, setProductsLoading] = useState(false);
+    const [productsLoading, setProductsLoading] = useState(false);
     const [token, setToken] = useState(localStorage.getItem("token") ? localStorage.getItem("token") : '')
     const [loggedUser, setLoggedUser] = useState(localStorage.getItem("loggedUser") ? JSON.parse(localStorage.getItem("loggedUser")) : '')
     const navigate = useNavigate()
 
     const addToCart = async (itemId, size) => {
-         if(!token){
-                  toast.error("Please Login First");
+        if (!token) {
+            toast.error("Please Login First");
             return;
         }
         if (!size) {
             toast.error("Select product size");
             return;
         }
-       
+
         let cartData = structuredClone(cartItems);
         if (cartData[itemId]) {
             if (cartData[itemId][size]) {
                 cartData[itemId][size] += 1
+                toast.success("Product added to cart")
 
             }
             else {
                 cartData[itemId][size] = 1;
-
+    toast.success("Product added to cart")
             }
         }
         else {
             cartData[itemId] = {};
             cartData[itemId][size] = 1;
+                toast.success("Product added to cart")
 
         }
         setCartItems(cartData)
@@ -128,14 +130,14 @@ const ShopContextProvider = (props) => {
             console.log(error)
             toast.error(error.message)
         }
-        finally{
+        finally {
             setProductsLoading(false);
         }
     }
 
     const getUserCart = async (token) => {
         try {
-setProductsLoading(true)
+            setProductsLoading(true)
             const response = await axios.post(backendURL + "/api/cart/get", {}, { headers: { token } })
             if (response.data.success) {
                 setCartItems(response.data.cartData)
@@ -144,7 +146,7 @@ setProductsLoading(true)
             console.log(error)
             toast.error(error.message)
         }
-        finally{
+        finally {
             setProductsLoading(false)
         }
     }
@@ -156,11 +158,11 @@ setProductsLoading(true)
     useEffect(() => {
         getUserCart(localStorage.getItem("token"))
         getUserCart(JSON.parse(localStorage.getItem("loggedUser")))
-        
+
     }, [token])
 
     const value = {
-      loggedUser, setLoggedUser,  products, currency, delivery_fee, search, setSearch, showSearch, setShowSearch, cartItems, setCartItems, addToCart, getCartCount, updateQuantity, getCartAmount, navigate, backendURL, setToken, token, productsLoading, setProductsLoading
+        loggedUser, setLoggedUser, products, currency, delivery_fee, search, setSearch, showSearch, setShowSearch, cartItems, setCartItems, addToCart, getCartCount, updateQuantity, getCartAmount, navigate, backendURL, setToken, token, productsLoading, setProductsLoading
 
     }
     return (
