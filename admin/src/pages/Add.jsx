@@ -14,7 +14,7 @@ const Add = ({ token }) => {
   const [image4, setImage4] = useState(false)
 
   const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
+  const [description, setDescription] = useState("A lightweight, usually knitted, pullover shirt, close-fitting and with a round neckline and short sleeves, worn as an undershirt or outer garment.");
   const [price, setPrice] = useState("100");
   const [category, setCategory] = useState("Men");
   const [subCategory, setSubCategory] = useState("Topwear");
@@ -45,7 +45,7 @@ const Add = ({ token }) => {
 
         toast.success(response.data.message);
         setName('')
-        setDescription('')
+        setDescription('A lightweight, usually knitted, pullover shirt, close-fitting and with a round neckline and short sleeves, worn as an undershirt or outer garment.')
         setPrice('')
         setImage1(false)
         setImage2(false)
