@@ -145,7 +145,7 @@ const Add = ({ token }) => {
         <input onChange={() => setBestSeller(prev => !prev)} checked={bestSeller} type="checkbox" id="bestseller" />
         <label className='cursor-pointer' htmlFor="bestseller">Add to bestseller</label>
       </div>
-      <button className='flex items-center justify-center gap-2 w-28 py-3 px-2 mt-4 bg-black text-white' type='submit'>{loading ? "loading..." : "Add"}  {loading && (
+      <button className='flex items-center justify-center gap-2 w-28 py-3 px-2 mt-4 bg-black text-white' type='submit'>Add {loading && (
         <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin "></div>
       )}</button>
     </form>

@@ -17,7 +17,6 @@ const Login = () => {
 
     try {
       if (currentState === "Sign Up") {
-    setLoading(true)
         const response = await axios.post(backendURL + '/api/user/register', { name, email, password });
         if (response.data.success) {
           toast.success("Register Successfully");
@@ -53,11 +52,13 @@ const Login = () => {
       setLoading(false)
     }
   }
+
   useEffect(() => {
     if (token) {
       navigate('/')
     }
-  }, [token])
+  }, [token]);
+  
   return (
     <form onSubmit={onSubmitHandler} className='flex flex-col items-center w-[90%]  sm:max-w-96 m-auto mt-14 gap-4 text-gray-800'>
       <div className="inline-flex items-center gap-3 mb-3 mt-10">

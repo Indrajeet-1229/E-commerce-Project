@@ -64,7 +64,8 @@ const Orders = () => {
       <div className="text-2xl">
         <Title text1={"MY"} text2={"ORDERS"} />
       </div>
-
+{
+  orderData ? 
       <div>
         {orderData.map((item, index) => {
 
@@ -169,7 +170,8 @@ const Orders = () => {
             </div>
           )
         })}
-      </div>
+      </div> : <Loader/>
+}
 
     </div>
   )
