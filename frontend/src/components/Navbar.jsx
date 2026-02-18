@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState,useEffect } from 'react'
 import { assets } from '../assets/assets'
 import { Link, NavLink } from 'react-router-dom'
 import { ShopContext } from '../context/ShopContext'
@@ -6,6 +6,7 @@ import { ShopContext } from '../context/ShopContext'
 const Navbar = () => {
     const { setShowSearch, getCartCount, navigate, token, setToken, setCartItems, loggedUser, setLoggedUser } = useContext(ShopContext);
 
+    const [open, setOpen] = useState(false);
 
     const [visible, setVisible] = useState(false)
     const logout = () => {
@@ -22,6 +23,9 @@ const Navbar = () => {
         setShowSearch(true)
         navigate('/collection')
     }
+
+  
+
     return (
         <div className='flex items-center justify-between py-5 font-medium sm:sticky top-0 bg-gray-50 px-2 z-1000'>
             <Link to="/"> <img src={assets.logo} className='w-36' alt="" /> </Link>
@@ -45,57 +49,64 @@ const Navbar = () => {
             </ul>
             <div className="flex items-center gap-6 ">
                 <img onClick={handleSearchIcon} src={assets.search_icon} className='cursor-pointer w-5' alt="" />
-                <div className="group relative">
-                    <img onClick={() => token ? null : navigate('/login')} src={assets.profile_icon} className='w-5 cursor-pointer' alt="" />
-                    {
-                        token ?
-                            <div className="group-hover:block absolute hidden dropdown-menu right-0 pt-4">
-                                <div className="flex flex-col w-44 bg-white shadow-lg rounded-xl border border-gray-200 overflow-hidden">
+                <div className="relative">
+                    <img
+                        onClick={() => {
+                            if (!token) {
+                                navigate("/login");
+                            } else {
+                                setOpen(!open);
+                            }
+                        }}
+                        src={assets.profile_icon}
+                        className="w-5 cursor-pointer"
+                        alt=""
+                    />
 
-                
-                                    <div className="px-5 py-4 bg-gray-50 border-b border-gray-200">
-                                        <p className="font-semibold text-gray-800 text-sm">
-                                            {loggedUser.name}
-                                        </p>
-                                        <p className="text-xs text-gray-500 break-all">
-                                            ({loggedUser.email})
-                                        </p>
-                                    </div>
+                    {open && (
+                        <div className="absolute right-0 pt-4 z-50">
+                            <div className="flex flex-col w-44 bg-white shadow-lg rounded-xl border border-gray-200 overflow-hidden">
 
+                                {token ? (
+                                    <>
+                                        <div className="px-5 py-4 bg-gray-50 border-b border-gray-200">
+                                            <p className="font-semibold text-gray-800 text-sm">
+                                                {loggedUser.name}
+                                            </p>
+                                            <p className="text-xs text-gray-500 break-all">
+                                                ({loggedUser.email})
+                                            </p>
+                                        </div>
 
-                              
-                                    <div className="flex flex-col text-sm text-gray-600">
-                                        <button
-                                            onClick={() => navigate('/orders')}
-                                            className="text-left px-5 py-3 hover:bg-gray-100 hover:text-black transition"
-                                        >
-                                            Orders
-                                        </button>
+                                        <div className="flex flex-col text-sm text-gray-600">
+                                            <button
+                                                onClick={() => navigate("/orders")}
+                                                className="text-left px-5 py-3 hover:bg-gray-100 hover:text-black transition"
+                                            >
+                                                Orders
+                                            </button>
 
-                                        <button
-                                            onClick={logout}
-                                            className="text-left px-5 py-3 hover:bg-red-50 hover:text-red-600 transition"
-                                        >
-                                            Logout
-                                        </button>
-                                    </div>
-
-                                </div>
+                                            <button
+                                                onClick={logout}
+                                                className="text-left px-5 py-3 hover:bg-red-50 hover:text-red-600 transition"
+                                            >
+                                                Logout
+                                            </button>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <button
+                                        onClick={() => navigate("/login")}
+                                        className="text-left px-5 py-3 hover:bg-gray-100"
+                                    >
+                                        Login
+                                    </button>
+                                )}
                             </div>
-                            : <div className="group-hover:block absolute hidden dropdown-menu right-0 pt-4">
-                                <div className="flex flex-col w-44 bg-white shadow-lg rounded-xl border border-gray-200 overflow-hidden">
-                                    <div className="flex flex-col text-sm text-gray-600">
-                                        <button
-                                            onClick={() => navigate('/login')}
-                                            className="text-left px-5 py-3 hover:bg-red-50  transition" >
-                                             Login
-                                        </button>
-                                    </div>
-                                    
-                                </div>
-                            </div>
-                    }
+                        </div>
+                    )}
                 </div>
+
                 <Link to='./cart' className='relative'>
                     <img src={assets.cart_icon} className='w-5 min-w-5' alt="" />
                     <p className="absolute right-[-5px] bottom-[-5px] w-4 text-center leading-4 bg-black text-white  aspect-square text-[8px] rounded-full">{getCartCount()}</p>
