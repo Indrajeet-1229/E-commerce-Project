@@ -27,7 +27,7 @@ const Navbar = () => {
   
 
     return (
-        <div className='flex items-center justify-between py-5 font-medium sm:sticky top-0 bg-gray-50 px-2 z-1000'>
+        <div className='flex items-center justify-between py-5 font-medium sticky top-0 bg-gray-50 px-2 z-1000'>
             <Link to="/"> <img src={assets.logo} className='w-36' alt="" /> </Link>
             <ul className='hidden sm:flex gap-5 text-sm text-gray-700'>
                 <NavLink to='/' className='flex flex-col items-center gap-1'>
@@ -116,7 +116,7 @@ const Navbar = () => {
 
             {/* Sidebar Menu for small screen */}
 
-            <div className={`absolute top-0 right-0  bottom-0 overflow-hidden z-50 bg-white transition-all ${visible ? 'w-full' : 'w-0'}`}>
+            <div className={`z-1000 fixed top-0 right-0  bottom-0 overflow-hidden z-50 bg-white transition-all ${visible ? 'w-full' : 'w-0'}`}>
                 <div className="flex flex-col text-gray-600 cursor-pointer">
                     <div onClick={() => setVisible(false)} className="flex items-center gap-4  p-3 ">
                         <img className='h-4 rotate-180' src={assets.dropdown_icon} alt="" />
