@@ -88,17 +88,10 @@ const Navbar = () => {
                                         <button
                                             onClick={() => navigate('/login')}
                                             className="text-left px-5 py-3 hover:bg-red-50  transition" >
-                                            User Login
+                                             Login
                                         </button>
                                     </div>
-                                    <div className="flex flex-col text-sm text-gray-600">
-                                        <a
-                                           href='https://forever-admin-orpin.vercel.app/add' target='_blank'
-                                            className="text-left px-5 py-3 hover:bg-red-50  transition" >
-                                            Admin Dashboard
-                                        </a>
-                                    </div>
-
+                                    
                                 </div>
                             </div>
                     }
