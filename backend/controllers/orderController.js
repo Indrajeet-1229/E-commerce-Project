@@ -1,3 +1,5 @@
+import dotenv from "dotenv";
+dotenv.config();
 import orderModel from "../models/orderModel.js"
 import userModel from "../models/userModel.js";
 import Stripe from 'stripe'
@@ -5,17 +7,15 @@ import Stripe from 'stripe'
 // globle varibales
 const currency = "inr";
 const deliveryCharge = 10;
-console.log(process.env.STRIPE_SECRET_KEY)
+
 //GATEwAY INITIALIZE
-const stripe = new Stripe("sk_test_51T1iXj0ebElRKGMONeCJik7MtyqEvUb5np9PlDlTX7M5g8VN9fh5ogQ82gahv0eeHHlyEgZbf42uofZLqIG90UZZ00AeyKvyMY");
-
-
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 
 const placeOrder = async (req, res) => {
     try {
         const { userId, items, amount, address } = req.body
-
+ console.log(address)
         const orderData = {
             userId,
             items,
@@ -42,8 +42,8 @@ const placeOrderStripe = async (req, res) => {
     try {
         const { userId, items, amount, address } = req.body
         const { origin } = req.headers || process.env.FRONTEND_URL
-        // console.log(req.body)
-        console.log(req.headers)
+  
+
         const orderData = {
             userId,
             items,
@@ -97,7 +97,7 @@ const placeOrderStripe = async (req, res) => {
 
 const verifyStripe = async (req, res) => {
     const { orderId, success, userId } = req.body
-    console.log(req.body)
+
 
     try {
         if (success === "true") {

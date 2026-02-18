@@ -12,9 +12,7 @@ const addProduct = async (req, res) => {
 
         const images = [image1, image2, image3, image4].filter((item) => item !== undefined);
 
-        if (!name || !description) {
-            res.json({ success: false, message: "Name and Description fields required" });
-        }
+       
 
         let imagesUrl = await Promise.all(
             images.map(async (item) => {

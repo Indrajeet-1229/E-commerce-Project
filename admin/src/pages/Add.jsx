@@ -13,11 +13,11 @@ const Add = ({ token }) => {
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [price, setPrice] = useState("");
+  const [price, setPrice] = useState("100");
   const [category, setCategory] = useState("Men");
   const [subCategory, setSubCategory] = useState("Topwear");
   const [bestSeller, setBestSeller] = useState(false)
-  const [sizes, setSizes] = useState([])
+  const [sizes, setSizes] = useState(['S','XL' ])
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
@@ -94,7 +94,7 @@ const Add = ({ token }) => {
       </div>
       <div className='w-full'>
         <p className='mb-2'>Product Description</p>
-        <textarea onChange={(e) => setDescription(e.target.value)} value={description} className='w-full max-w-[500px] px-3 py-2 ' placeholder='Write content here'></textarea>
+        <textarea onChange={(e) => setDescription(e.target.value)} value={description} className='w-full max-w-[500px] px-3 py-2 ' placeholder='Write content here' required></textarea>
       </div>
       <div className='flex flex-col sm:flex-row gap-2 w-full sm:gap-8'>
         <div>

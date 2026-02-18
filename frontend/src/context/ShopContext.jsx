@@ -13,28 +13,34 @@ const ShopContextProvider = (props) => {
     const [cartItems, setCartItems] = useState({});
     const [products, setProducts] = useState([]);
     const [token, setToken] = useState(localStorage.getItem("token") ? localStorage.getItem("token") : '')
+    const [loggedUser, setLoggedUser] = useState(localStorage.getItem("loggedUser") ? JSON.parse(localStorage.getItem("loggedUser")) : '')
     const navigate = useNavigate()
 
     const addToCart = async (itemId, size) => {
+         if(!token){
+                  toast.error("Please Login First");
+            return;
+        }
         if (!size) {
             toast.error("Select product size");
             return;
         }
+       
         let cartData = structuredClone(cartItems);
         if (cartData[itemId]) {
             if (cartData[itemId][size]) {
                 cartData[itemId][size] += 1
-              
+
             }
             else {
                 cartData[itemId][size] = 1;
-          
+
             }
         }
         else {
             cartData[itemId] = {};
             cartData[itemId][size] = 1;
-           
+
         }
         setCartItems(cartData)
 
@@ -97,7 +103,7 @@ const ShopContextProvider = (props) => {
                         totalAmount += itemsInfo.price * cartItems[items][item];
                     }
                 } catch (error) {
-
+                    console.log(error)
                 }
             }
         }
@@ -110,7 +116,7 @@ const ShopContextProvider = (props) => {
             const response = await axios.get(backendURL + "/api/product/list");
             if (response.data.success) {
                 setProducts(response.data.products)
-              
+
             }
             else {
                 toast.error(response.data.message)
@@ -137,12 +143,16 @@ const ShopContextProvider = (props) => {
 
     useEffect(() => {
         getProductsData();
-        getUserCart(localStorage.getItem("token"))
-    }, [])
 
+    }, [])
+    useEffect(() => {
+        getUserCart(localStorage.getItem("token"))
+        getUserCart(JSON.parse(localStorage.getItem("loggedUser")))
+        
+    }, [token])
 
     const value = {
-        products, currency, delivery_fee, search, setSearch, showSearch, setShowSearch, cartItems,setCartItems, addToCart, getCartCount, updateQuantity, getCartAmount, navigate, backendURL, setToken, token
+      loggedUser, setLoggedUser,  products, currency, delivery_fee, search, setSearch, showSearch, setShowSearch, cartItems, setCartItems, addToCart, getCartCount, updateQuantity, getCartAmount, navigate, backendURL, setToken, token
 
     }
     return (

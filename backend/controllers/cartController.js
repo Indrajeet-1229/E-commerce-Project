@@ -58,7 +58,7 @@ const updateCart = async (req, res) => {
     }
 }
 
-const getUseCart = async (req, res) => {
+const getUserCart = async (req, res) => {
     try {
         const { userId } = req.body;
         const userData = await userModel.findById(userId);
@@ -71,4 +71,4 @@ const getUseCart = async (req, res) => {
     }
 }
 
-export { addToCart, updateCart, getUseCart }
+export { addToCart, updateCart, getUserCart }

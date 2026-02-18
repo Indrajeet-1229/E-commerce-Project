@@ -14,11 +14,12 @@ import Footer from './components/Footer';
 import SerachBar from './components/SerachBar';
   import { ToastContainer, toast } from 'react-toastify';
 import Verify from './pages/Verify';
+import ScrollToTop from './components/ScrollToTop';
 
 const App = () => {
   return (
     <div className='px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]'>
-        <ToastContainer />
+        <ToastContainer    autoClose={1000} />
       <Navbar />
       <SerachBar/>
       <Routes>
@@ -34,7 +35,7 @@ const App = () => {
         <Route path='/verify' element={<Verify />} />
 
       </Routes>
-
+<ScrollToTop />
         <Footer />
     </div>
   )

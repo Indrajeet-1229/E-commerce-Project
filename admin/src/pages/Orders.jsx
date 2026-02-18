@@ -31,11 +31,12 @@ function Orders({ token }) {
   }
 
   const statusHandler = async (e, orderId) => {
+    const updatedStatus = e.target.value
     try {
-      const response = await axios.post(backendUrl + "/api/order/status", { orderId, status: e.target.value }, { headers: { token } });
+      const response = await axios.post(backendUrl + "/api/order/status", { orderId, status: updatedStatus }, { headers: { token } });
       if (response.data.success) {
-        console.log("hi")
         await fetchAllOrderes()
+        toast.success(`Status Changed to ${updatedStatus}`)
       }
 
     } catch (error) {
@@ -67,7 +68,7 @@ function Orders({ token }) {
                     }
                   })}
                 </div>
-                <p className='mt-3 mb-2 font-medium'>{order.address.firstName + " " + order.address.firstName}</p>
+                <p className='mt-3 mb-2 font-medium'>{order.address.firstName + " " + order.address.lastName}</p>
                 <div>
                   <p>{order.address.street + " " + ","}</p>
 
@@ -82,7 +83,7 @@ function Orders({ token }) {
                 <p>Date:{new Date(order.date).toLocaleDateString()}</p>
               </div>
               <p className='text-sm sm:text-[15px]'>{currency}{order.amount}</p>
-              <select onChange={(e)=>statusHandler(e, order._id)} value={order.status} className='p-2 font-semibold' >
+              <select onChange={(e) => statusHandler(e, order._id)} value={order.status} className='p-2 font-semibold' >
                 <option value="Order Placed">Order Placed</option>
                 <option value="Packing">Packing</option>
                 <option value="Shipped">Shipped</option>
@@ -90,8 +91,10 @@ function Orders({ token }) {
                 <option value="Delivered">Delivered</option>
               </select>
             </div>
+            
           ))
         }
+        
       </div>
 
     </div>

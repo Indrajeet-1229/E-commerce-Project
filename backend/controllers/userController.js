@@ -19,10 +19,11 @@ const loginUser = async (req, res) => {
         if (!user) {
             return res.json({ success: false, message: "User dosen't exists" })
         }
+    
         const isMatch = await bcrypt.compare(password, user.password);
         if (isMatch) {
             const token = createToken(user._id);
-            res.json({ success: true, token })
+            res.json({ success: true, token, user:{name:user.name, email:user.email}})
         }
         else {
             res.json({ success: false, message: "Invalid Credentials" })
@@ -52,7 +53,7 @@ const registerUser = async (req, res) => {
         if (!validator.isEmail(email)) {
             return res.json({ succuss: false, message: "Please enter a valid email" })
         }
-        if (password.length < 8) {
+        if (password.length < 3) {
             return res.json({ succuss: false, message: "Please enter a strong password" })
         }
         // Hashing user password
@@ -64,10 +65,11 @@ const registerUser = async (req, res) => {
 
         });
         const user = await newUser.save();
+    
 
         //Generate Token
         const token = createToken(user._id)
-        res.json({ success: true, token })
+        res.json({ success: true, token, user:{name:user.name, email:user.email} })
 
     }
     catch (error) {

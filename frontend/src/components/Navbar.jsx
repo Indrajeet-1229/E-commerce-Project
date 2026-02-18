@@ -4,19 +4,26 @@ import { Link, NavLink } from 'react-router-dom'
 import { ShopContext } from '../context/ShopContext'
 
 const Navbar = () => {
-    const { setShowSearch, getCartCount, navigate, token, setToken, setCartItems } = useContext(ShopContext)
+    const { setShowSearch, getCartCount, navigate, token, setToken, setCartItems, loggedUser, setLoggedUser } = useContext(ShopContext);
+
+
     const [visible, setVisible] = useState(false)
     const logout = () => {
-        navigate('/login')
         localStorage.removeItem('token');
+        localStorage.removeItem('loggedUser')
         setToken('');
+        setLoggedUser('')
         setCartItems({});
+        navigate('/login')
 
     }
 
-
+    const handleSearchIcon = () => {
+        setShowSearch(true)
+        navigate('/collection')
+    }
     return (
-        <div className='flex items-center justify-between py-5 font-medium'>
+        <div className='flex items-center justify-between py-5 font-medium sticky top-0 bg-gray-50 px-2 z-50'>
             <Link to="/"> <img src={assets.logo} className='w-36' alt="" /> </Link>
             <ul className='hidden sm:flex gap-5 text-sm text-gray-700'>
                 <NavLink to='/' className='flex flex-col items-center gap-1'>
@@ -37,19 +44,63 @@ const Navbar = () => {
                 </NavLink>
             </ul>
             <div className="flex items-center gap-6 ">
-                <img onClick={() => setShowSearch(true)} src={assets.search_icon} className='cursor-pointer w-5' alt="" />
+                <img onClick={handleSearchIcon} src={assets.search_icon} className='cursor-pointer w-5' alt="" />
                 <div className="group relative">
-                    <img onCanPlayThrough={() => token ? null : navigate('/login')} src={assets.profile_icon} className='w-5 cursor-pointer' alt="" />
+                    <img onClick={() => token ? null : navigate('/login')} src={assets.profile_icon} className='w-5 cursor-pointer' alt="" />
                     {
-                        token &&
-                        <div className="group-hover:block absolute hidden dropdown-menu right-0 pt-4">
-                            <div className="flex flex-col gap-2 w-36 px-5 py-3 bg-slate-100  text-gray-500 rounded ">
-                                <p className='cursor-pointer hover:text-black '>My Profile</p>
-                                <p onClick={()=>navigate('/orders')} className='cursor-pointer hover:text-black '>Orders</p>
-                                <p onClick={logout} className='cursor-pointer hover:text-black '>Logout</p>
+                        token ?
+                            <div className="group-hover:block absolute hidden dropdown-menu right-0 pt-4">
+                                <div className="flex flex-col w-44 bg-white shadow-lg rounded-xl border border-gray-200 overflow-hidden">
 
+                
+                                    <div className="px-5 py-4 bg-gray-50 border-b border-gray-200">
+                                        <p className="font-semibold text-gray-800 text-sm">
+                                            {loggedUser.name}
+                                        </p>
+                                        <p className="text-xs text-gray-500 break-all">
+                                            ({loggedUser.email})
+                                        </p>
+                                    </div>
+
+
+                              
+                                    <div className="flex flex-col text-sm text-gray-600">
+                                        <button
+                                            onClick={() => navigate('/orders')}
+                                            className="text-left px-5 py-3 hover:bg-gray-100 hover:text-black transition"
+                                        >
+                                            Orders
+                                        </button>
+
+                                        <button
+                                            onClick={logout}
+                                            className="text-left px-5 py-3 hover:bg-red-50 hover:text-red-600 transition"
+                                        >
+                                            Logout
+                                        </button>
+                                    </div>
+
+                                </div>
                             </div>
-                        </div>
+                            : <div className="group-hover:block absolute hidden dropdown-menu right-0 pt-4">
+                                <div className="flex flex-col w-44 bg-white shadow-lg rounded-xl border border-gray-200 overflow-hidden">
+                                    <div className="flex flex-col text-sm text-gray-600">
+                                        <button
+                                            onClick={() => navigate('/login')}
+                                            className="text-left px-5 py-3 hover:bg-red-50  transition" >
+                                            User Login
+                                        </button>
+                                    </div>
+                                    <div className="flex flex-col text-sm text-gray-600">
+                                        <a
+                                           href='https://forever-admin-orpin.vercel.app/add' target='_blank'
+                                            className="text-left px-5 py-3 hover:bg-red-50  transition" >
+                                            Admin Dashboard
+                                        </a>
+                                    </div>
+
+                                </div>
+                            </div>
                     }
                 </div>
                 <Link to='./cart' className='relative'>

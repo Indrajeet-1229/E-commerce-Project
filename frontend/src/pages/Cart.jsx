@@ -5,7 +5,7 @@ import { assets } from '../assets/assets';
 import CartTotal from '../components/CartTotal';
 
 const Cart = () => {
-  const { products, currency, cartItems, updateQuantity, navigate } = useContext(ShopContext);
+  const { products, currency, cartItems, updateQuantity, navigate,token } = useContext(ShopContext);
   const [cartData, setCartData] = useState([]);
 
   useEffect(() => {
@@ -30,6 +30,7 @@ const Cart = () => {
 
   }, [cartItems, products]);
 
+   
   return (
     <div className='border-t pt-14'>
       <div className="text-2xl mb-3 ">
