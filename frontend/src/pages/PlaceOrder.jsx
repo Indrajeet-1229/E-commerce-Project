@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import Title from '../components/Title'
 import CartTotal from '../components/CartTotal'
 import { assets } from '../assets/assets'
@@ -6,9 +6,11 @@ import { ShopContext } from '../context/ShopContext'
 import { toast } from 'react-toastify'
 import axios from 'axios'
 
+
 const PlaceOrder = () => {
   const { products, delivery_fee, cartItems, setCartItems, getCartAmount, navigate, backendURL, token } = useContext(ShopContext)
   const [method, setMethod] = useState('cod');
+
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -88,6 +90,21 @@ const PlaceOrder = () => {
     const value = e.target.value;
     setFormData(data => ({ ...data, [name]: value }));
   }
+   useEffect(() => {
+    let hasItem = false;
+
+    for (const items in cartItems) {
+      for (const item in cartItems[items]) {
+        if (cartItems[items][item] > 0) {
+          hasItem = true;
+        }
+      }
+    }
+
+    if (!hasItem) {
+      navigate("/cart");
+    }
+  }, []);
   return (
     <form onSubmit={onSubmitHandler} className='flex flex-col sm:flex-row justify-between gap-4 pt-5 sm:pt-14 min-h-[80vh] border-t'>
       {/* Left side */}

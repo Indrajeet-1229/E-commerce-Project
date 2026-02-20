@@ -16,6 +16,27 @@ const ShopContextProvider = (props) => {
     const [token, setToken] = useState(localStorage.getItem("token") ? localStorage.getItem("token") : '')
     const [loggedUser, setLoggedUser] = useState(localStorage.getItem("loggedUser") ? JSON.parse(localStorage.getItem("loggedUser")) : '')
     const navigate = useNavigate()
+   
+
+  const handleProceed = () => {
+    console.log(cartItems)
+    if (products.length > 0) {
+
+      for (const items in cartItems) {
+        for (const item in cartItems[items]) {
+          if (cartItems[items][item] > 0) {
+            navigate('/place-order')
+          }
+          else {
+            toast.warn("Please, add product in cart")
+          }
+        }
+      }
+
+    }
+
+  }
+
 
     const addToCart = async (itemId, size) => {
         if (!token) {
@@ -83,6 +104,8 @@ const ShopContextProvider = (props) => {
     const updateQuantity = async (itemId, size, quantity) => {
         let cartData = structuredClone(cartItems);
         cartData[itemId][size] = quantity;
+     
+        
         setCartItems(cartData);
         if (token) {
             try {
@@ -93,6 +116,8 @@ const ShopContextProvider = (props) => {
                 toast.error(error.message)
             }
         }
+        
+
 
     }
 
@@ -162,7 +187,7 @@ const ShopContextProvider = (props) => {
     }, [token])
 
     const value = {
-        loggedUser, setLoggedUser, products, currency, delivery_fee, search, setSearch, showSearch, setShowSearch, cartItems, setCartItems, addToCart, getCartCount, updateQuantity, getCartAmount, navigate, backendURL, setToken, token, productsLoading, setProductsLoading
+        loggedUser, setLoggedUser, products, currency, delivery_fee, search, setSearch, showSearch, setShowSearch, cartItems, setCartItems, addToCart, getCartCount, updateQuantity, getCartAmount, navigate, backendURL, setToken, token, productsLoading, setProductsLoading, handleProceed
 
     }
     return (
